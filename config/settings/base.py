@@ -1,9 +1,10 @@
 
 from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv('./.env')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+load_dotenv(BASE_DIR / '.env')
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +26,9 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-USER_APPS = []
+USER_APPS = [
+    'customer',
+]
 
 THIRD_PARTY_APPS = [
     'rest_framework',
@@ -48,7 +51,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
