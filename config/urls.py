@@ -7,4 +7,7 @@ urlpatterns = [
 
 #     customer
     path('customer/', include('customer.urls')),
+
+#     counsel
+    path('counsel/', include('counsel.urls')),
 ]

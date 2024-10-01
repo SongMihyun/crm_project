@@ -1,0 +1,68 @@
+{#static 파일 경로 설정#}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>base</title>
+
+    <!-- CSS 파일 링크 -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <!-- JS 파일 연결 / defer 를 이용해서 제일 마지막에 실행되게 설정 -->
+    <script src="{% static 'js/base.js' %} defer"></script>
+</head>
+<body>
+
+{# body 전체를 container로 감쌈#}
+<div class="container">
+
+    <header class="header" id="header">
+    {#  로그인유저네임 /로그인 / 로그아웃 #}
+        헤더자리
+    </header>
+
+{#    주요 기능 구현#}
+    <main class="main" id="main">
+
+    {#    왼쪽 메뉴바 구역 #}
+        <aside class="aside_left">
+            <div class="menu_wrap">
+                <div class="menu">
+                    <ul>
+                        <li><a href="{% url 'list' %}">고객 리스트</a></li>
+                        <li><a href="{% url 'create' %}">고객 추가</a></li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+    {#    가운데 컨텐츠 구역#}
+        <section class="section" id="section">
+            <div class="section_wrap">
+               <div class="content">
+                    {#       주요 컨텐츠 작성#}
+                    {% block content %}{% endblock %}
+               </div>
+            </div>
+        </section>
+
+    {#    오른쪽 기능 구역#}
+        <aside class="aside_right">
+              <div class="menu_wrap">
+                <div class="menu"></div>
+            </div>
+        </aside>
+
+    </main>
+
+{# footer 구역#}
+    <footer class="footer" id="footer">
+        푸터자리
+    </footer>
+</div>
+
+{#	추가 js 영역 #}
+{% block js %}{% endblock %}
+</body>
+</html>

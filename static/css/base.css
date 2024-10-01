@@ -1,0 +1,24 @@
+*{margin: 0; padding: 0;}
+a{text-decoration: none;}
+
+body{width: 100vw; height: 100vh; background-color: red;}
+.container{width: 100%; height: 100%; background-color: #ddd; box-sizing: border-box; overflow: hidden;}
+
+header{width: 100%; height: 5%; background-color: pink;}
+main{display: flex; flex-wrap: nowrap; width: 100%; height: 85%;}
+aside{width: 15%; height: 100%;}
+.aside_left{display: flex;}
+section{display: flex; width: 70%; height: 100%;}
+.aside_right{display: flex;}
+
+aside .menu_wrap{width: 100%; height: 100%; box-sizing: border-box; padding: 5px;}
+aside .menu_wrap .menu{width: 100%; height: 100%;  background-color: yellowgreen; border-radius: 10px;}
+
+section .section_wrap{width: 100%; height: 100%; box-sizing: border-box; padding: 5px;}
+section .section_wrap .content{width: 100%; height: 100%;  background-color: bisque; border-radius: 10px;}
+
+
+
+
+
+footer{width: 100%; height: 10%; background-color: #bbb;}

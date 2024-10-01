@@ -1,10 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Customer List</title>
-</head>
-<body>
-customer list
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<!--customer list-->
+<!--customer_list 객체로 고객리스트 전달함-->
+    <div class="search_area">
+        <form method="get">
+            {% csrf_token %}
+{#                고객이름 혹은 전화번호중에 일치하는값이 있는지 검색해서 보여줌#}
+            <input name="q" type="text" placeholder="이름 or 전화번호" value="{% if request.GET.q %}{{ request.GET.q }}{% endif %}">
+            <button>검색</button>
+        </form>
+    </div>
+
+    <table>
+        <tr>
+            <th class="id">No.</th>
+            <th class="name">이름</th>
+            <th class="phone">전화번호</th>
+        </tr>
+        {% for customer in page_obj %}
+        <tr>
+            <td><a href="{% url 'detail' customer.id %}">{{ customer.id }}</a></td>
+            <td><a href="{% url 'detail' customer.id %}">{{ customer.name }}</a></td>
+            <td>{{ customer.phone }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">검색 결과가 없습니다.</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
+
