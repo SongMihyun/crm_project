@@ -1,70 +1,55 @@
-from django.http import HttpResponseRedirect
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-from rest_framework.generics import get_object_or_404
-from rest_framework.reverse import reverse_lazy
-
-from counsel.forms import CounselForm
-from counsel.models import Counsel
-from customer.forms import CustomerForm
-from customer.models import Customer
+from django.views.generic import TemplateView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, get_object_or_404, ListAPIView
+from customers.models import Customer, FamilyGroup
+from customers.serializers import CustomerSerializer, FamilySerializer
 from utils.search import SearchMixin
 
-class CustomerListView(SearchMixin,ListView):
+# http://127.0.0.1:8000/customer/
+class CustomerListCreateView(SearchMixin,ListCreateAPIView):
     model = Customer
+    serializer_class = CustomerSerializer
+
+# http://127.0.0.1:8000/customer/1/
+class CustomerDetailView(RetrieveUpdateDestroyAPIView):
+    model = Customer
+    serializer_class = CustomerSerializer
+    queryset = Customer.objects.all().prefetch_related('family_members','counsels')
+
+
+################<<가족 그룹>>######################
+# 개인별 가족 그룹 리스트 및 생성 뷰
+class CustomerFamilyListCreateView(ListCreateAPIView):
+    model = FamilyGroup
+    serializer_class = FamilySerializer
+    # queryset = FamilyGroup.objects.all()
+    def get_queryset(self):
+        customer_pk = self.kwargs['customer_pk']
+        queryset = FamilyGroup.objects.filter(members__pk=customer_pk)
+        return queryset
+
+# 가족 그룹 수정 및 삭제 뷰
+class CustomerFamilyDetailView(RetrieveUpdateDestroyAPIView):
+    model = FamilyGroup
+    queryset = FamilyGroup.objects.all()
+    serializer_class = FamilySerializer
+
+# 전체 가족 그룹 조회및 생성
+class FamilyGroupListCreateView(ListCreateAPIView):
+    model = FamilyGroup
+    serializer_class = FamilySerializer
+    queryset = FamilyGroup.objects.all()
+
+class FamilyDetailView(RetrieveUpdateDestroyAPIView):
+    model = FamilyGroup
+    queryset = FamilyGroup.objects.all()
+    serializer_class = FamilySerializer
+
+
+
+##################<<html과 연결 뷰>>####################
+# 고객 리스트 페이지를 보여주는 HTML View (CBV)
+class CustomerListPageView(TemplateView):
     template_name = 'customer/customer_list.html'
 
-    # SearchMixin 으로 대체
-    # def get_queryset(self):
-    #     return Customer.objects.all()
-
-class CustomerCreateView(CreateView):
-    model = Customer
-    template_name = 'customer/customer_create.html'
-    form_class = CustomerForm
-
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
-
-    def get_success_url(self):
-        return reverse_lazy('detail', kwargs={'pk': self.object.pk})
-
-
-class CustomerDetailView(ListView):
-    model = Counsel
+class CustomerDetailPageView(TemplateView):
     template_name = 'customer/customer_detail.html'
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        self.customer = get_object_or_404(Customer, pk=self.kwargs['pk'])
-        context['customer'] = self.customer
-        context['counsel_form'] = CounselForm()
-        return context
-
-
-class CustomerUpdateView(UpdateView):
-    model = Customer
-    template_name = 'customer/customer_update.html'
-    form_class = CustomerForm
-
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
-
-    def get_success_url(self):
-        return reverse_lazy('detail', kwargs={'pk': self.object.pk})
-
-
-
-# 삭제기능을 구현하긴 했지만 아직 적용을 안함/
-class CustomerDeleteView(DeleteView):
-    model = Customer
-
-    def get_queryset(self):
-        return super().get_queryset()
-
-    def get_success_url(self):
-        return reverse_lazy('list')

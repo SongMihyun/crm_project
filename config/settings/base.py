@@ -122,3 +122,18 @@ UTILS_URL = 'utils/'
 UTILS_DIR = BASE_DIR / 'utils'
 
 UTILS_DIRS = [UTILS_DIR]
+
+
+
+REST_FRAMEWORK = {
+    # "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"],
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
+    # ],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 10  # 기본 페이지 크기
+}

@@ -9,5 +9,5 @@ urlpatterns = [
     path('customer/', include('customer.urls')),
 
 #     counsel
-    path('counsel/', include('counsel.urls')),
+    path('customer/<int:customer_pk>/counsel/', include('counsel.urls')),
 ]

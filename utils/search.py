@@ -1,6 +1,10 @@
 
 from django.db.models import Q
 
+from counsel.models import Counsel
+from customer.models import Customer
+
+
 # 고객 검색 Mixin
 # model = Customer / model = Consult ...
 #    <div class="search_area">
@@ -24,3 +28,4 @@ class SearchMixin:
                 Q(phone__icontains=q)
             )
         return queryset
+
